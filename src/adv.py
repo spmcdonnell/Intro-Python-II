@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -50,6 +51,55 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
-def init():
+
+def initialize():
+    player_name = input('What is your name?')
+
+    current_player = Player(player_name, room['outside'])
+
+    print(
+        f'Welcome {current_player.get_name()}! You are currently {current_player.get_location().name}')
+
     while True:
-        
+        player_input = input('Which direction will you proceed in?')
+
+        if player_input == 'n' or player_input == 's' or player_input == 'e' or player_input == 'w':
+            if player_input == 'n':
+                current_player.set_location(
+                    current_player.get_location().n_to
+                )
+
+                print(
+                    f'You are now in the {current_player.get_location().name}')
+            elif player_input == 's':
+                current_player.set_location(
+                    current_player.get_location().s_to
+                )
+
+                print(
+                    f'You are now in the {current_player.get_location().name}')
+            elif player_input == 'e':
+                current_player.set_location(
+                    current_player.get_location().e_to
+                )
+
+                print(
+                    f'You are now in the {current_player.get_location().name}')
+            else:
+                current_player.set_location(
+                    current_player.get_location().w_to
+                )
+
+                print(
+                    f'You are now in the {current_player.get_location().name}')
+        elif player_input == 'q':
+            print(
+                f'Goodbye {current_player.get_name()}, we hope you\'ll play again!')
+            break
+        else:
+            print(
+                'Invalid command: Navigate using "n", "s", "e", or "w", or press "q" to quit'
+            )
+
+
+initialize()
