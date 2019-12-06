@@ -191,13 +191,20 @@ def initialize():
                         print(
                             'Path does not exists. Try another direction.\n'
                         )
+            elif player_input == 'i' or player_input == 'inventory':
+                if len(current_player.items):
+                    print(
+                        f'You currently have:{nl}{nl.join(str(x.name) for x in current_player.items)}{nl}'
+                    )
+                else:
+                    print('You don\'t have anything!')
             elif player_input == 'q':
                 print(
                     f'Goodbye {current_player.get_name()}, we hope you\'ll play again!')
                 break
             else:
                 print(
-                    'Invalid command: Navigate using "n", "s", "e", or "w", or press "q" to quit'
+                    'Invalid command: Navigate using "n", "s", "e", or "w", or check your inventory with "i", or press "q" to quit'
                 )
         else:
             split_input = player_input.split()
@@ -205,14 +212,24 @@ def initialize():
             if split_input[0] == 'take' or split_input[0] == 'drop':
                 if split_input[0] == 'take':
                     if room_has_items(current_player.get_location()):
-                        current_player.items.append(item[split_input[1]])
+                        current_player.items.append(
+                            item[split_input[1].lower()])
                         current_player.location.items.remove(
-                            item[split_input[1]]
+                            item[split_input[1].lower()]
                         )
 
-                        print(f'You got: {current_player.items[0].name}!{nl}')
+                        print(
+                            f'You got: {current_player.items[len(current_player.items) - 1].name}!{nl}'
+                        )
                 else:
-                    print('Item does not exist!')
+                    current_player.items.remove(item[split_input[1]])
+                    current_player.location.items.append(
+                        item[split_input[1]]
+                    )
+
+                    print(
+                        f'You dropped: {current_player.location.items[len(current_player.items) - 1].name}!{nl}'
+                    )
             else:
                 print(
                     'Invalid command: use either "take" or "drop" to interact with items'
